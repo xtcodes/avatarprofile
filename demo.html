@@ -13,12 +13,11 @@ input { margin: 10px; }
 </head>
 <body>
 <h2>Alat Twibbon Sederhana</h2>
-<input type="file" id="uploadImage" accept="image/*" />
-<button id="downloadBtn">Unduh Hasil</button>
+<p><input type="file" id="uploadImage" accept="image/*" /></p>
 <div id="canvasContainer">
 <canvas id="twibbonCanvas" width="500" height="500"></canvas>
 </div>
-
+<p><button id="downloadBtn">Unduh Hasil</button></p>
 <script>
 const canvas = document.getElementById('twibbonCanvas');
 const ctx = canvas.getContext('2d');
