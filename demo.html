@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Alat Twibbon Sederhana</title>
+<style>
+body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+#canvasContainer { position: relative; display: inline-block; }
+canvas { width: 100%; border: 1px solid #ccc; cursor: move; }
+input { margin: 10px; }
+</style>
+</head>
+<body>
+<h2>Alat Twibbon Sederhana</h2>
+<input type="file" id="uploadImage" accept="image/*" />
+<br />
+<button id="downloadBtn">Unduh Hasil</button>
+<div id="canvasContainer">
+<canvas id="twibbonCanvas" width="500" height="500"></canvas>
+</div>
+
+<script>
+const canvas = document.getElementById('twibbonCanvas');
+const ctx = canvas.getContext('2d');
+const upload = document.getElementById('uploadImage');
+const download = document.getElementById('downloadBtn');
+
+let userImage = new Image();
+let twibbonImage = new Image();
+let dragging = false;
+let offsetX = 0, offsetY = 0;
+let imgX = 0, imgY = 0;
+
+userImage.onload = () => drawCanvas();
+twibbonImage.src = 'twibbon.png'; // Ganti dengan path gambar twibbon transparan
+twibbonImage.onload = () => drawCanvas();
+
+upload.addEventListener('change', (e) => {
+const reader = new FileReader();
+reader.onload = (event) => {
+userImage.src = event.target.result;
+};
+reader.readAsDataURL(e.target.files[0]);
+});
+
+function drawCanvas() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+if (userImage.src) ctx.drawImage(userImage, imgX, imgY, 500, 500);
+if (twibbonImage.src) ctx.drawImage(twibbonImage, 0, 0, 500, 500);
+}
+
+canvas.addEventListener('mousedown', (e) => {
+dragging = true;
+offsetX = e.offsetX - imgX;
+offsetY = e.offsetY - imgY;
+});
+
+canvas.addEventListener('mousemove', (e) => {
+if (dragging) {
+imgX = e.offsetX - offsetX;
+imgY = e.offsetY - offsetY;
+drawCanvas();
+}
+});
+
+canvas.addEventListener('mouseup', () => dragging = false);
+canvas.addEventListener('mouseleave', () => dragging = false);
+
+download.addEventListener('click', () => {
+const link = document.createElement('a');
+link.download = 'twibboned-image.png';
+link.href = canvas.toDataURL();
+link.click();
+});
+</script>
+</body>
+</html>
