@@ -6,9 +6,31 @@
 <title>Alat Twibbon Sederhana</title>
 <style>
 body {
-font-family: Arial, sans-serif;
-text-align: center;
-padding: 20px;
+margin: 0;
+padding: 0;
+font-family: 'Open Sans';
+font-weight: 400;
+line-height: 1.7em;
+}
+a {
+text-decoration: none;
+}
+.alert {
+background: #eee;
+padding: 40px;	
+position: relative;
+font-weight: 600;
+}
+.close_btn {
+color: #000;
+padding: 15px 0px 5px 10px;
+display: block;
+position: absolute;
+top: 40px;
+right: 40px;	
+}
+.content {
+padding: 40px;
 }
 #canvas {
 width: 100%;
@@ -21,6 +43,13 @@ margin-top: 10px;
 </style>
 </head>
 <body>
+<div class="alert">
+<h1>Alert!</h1>
+<h2 style="padding-top:10px;color:#000;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris condimentum eget turpis vitae gravida.</h2>
+<a href="#" class="close_btn"><i class="fa fa-2x fa-times"></i></a>
+</div><!-- /popup message  -->
+
+<div class="content">
 <h2>Alat Twibbon Sederhana</h2>
 <input type="file" id="uploadFoto" accept="image/*"><br>
 <input type="file" id="uploadTwibbon" accept="image/*"><br>
@@ -28,7 +57,8 @@ margin-top: 10px;
 <button onclick="unduhGambar()">Unduh</button>
 
 <canvas id="canvas" width="500" height="500"></canvas>
-
+</div>
+  
 <script>
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
