@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alat Twibbon Sederhana</title>
+<style>
+body {
+font-family: Arial, sans-serif;
+text-align: center;
+padding: 20px;
+}
+#canvas {
+width: 100%;
+border: 1px solid #ccc;
+margin-top: 20px;
+}
+input, button {
+margin-top: 10px;
+}
+</style>
+</head>
+<body>
+<h2>Alat Twibbon Sederhana</h2>
+<input type="file" id="uploadFoto" accept="image/*"><br>
+<input type="file" id="uploadTwibbon" accept="image/*"><br>
+<button onclick="gabungkanGambar()">Gabungkan</button>
+<button onclick="unduhGambar()">Unduh</button>
+
+<canvas id="canvas" width="500" height="500"></canvas>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let foto = new Image();
+let twibbon = new Image();
+
+function gabungkanGambar() {
+const fileFoto = document.getElementById('uploadFoto').files[0];
+const fileTwibbon = document.getElementById('uploadTwibbon').files[0];
+
+if (!fileFoto || !fileTwibbon) {
+alert("Silakan unggah foto dan twibbon terlebih dahulu.");
+return;
+}
+
+const readerFoto = new FileReader();
+const readerTwibbon = new FileReader();
+
+readerFoto.onload = function(e) {
+foto.onload = function() {
+readerTwibbon.onload = function(e2) {
+twibbon.onload = function() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.drawImage(foto, 0, 0, canvas.width, canvas.height);
+ctx.drawImage(twibbon, 0, 0, canvas.width, canvas.height);
+}
+twibbon.src = e2.target.result;
+}
+readerTwibbon.readAsDataURL(fileTwibbon);
+}
+foto.src = e.target.result;
+}
+readerFoto.readAsDataURL(fileFoto);
+}
+
+function unduhGambar() {
+const link = document.createElement('a');
+link.download = 'twibbon.png';
+link.href = canvas.toDataURL();
+link.click();
+}
+</script>
+</body>
+</html>
