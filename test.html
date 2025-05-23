@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editor Twibbon Sederhana</title>
+<style>
+body { font-family: sans-serif; text-align: center; margin: 20px; }
+canvas { border: 1px solid #ccc; touch-action: none; margin-top: 10px; }
+</style>
+</head>
+<body>
+<h2>Editor Twibbon Sederhana</h2>
+<input type="file" id="fileInput" accept="image/*"><br>
+<canvas id="displayCanvas" width="300" height="300"></canvas><br>
+<canvas id="canvas" width="300" height="300" style="display:none;"></canvas><br>
+<button onclick="generateTwibbon()">Terapkan Twibbon</button>
+<button onclick="downloadImage()">Unduh Gambar</button>
+<div id="output"></div>
+
+<script>
+let img = new Image();
+let frameImg = new Image();
+frameImg.src = 'twibbon.png';
+let displayCanvas, displayCtx, canvas, ctx;
+let isDragging = false;
+let startX, startY;
+let imgX = 0, imgY = 0;
+let imgScale = 1;
+let initialDistance = 0;
+
+function generateTwibbon() {
+const output = document.getElementById('output');
+const fileInput = document.getElementById('fileInput');
+canvas = document.getElementById('canvas');
+ctx = canvas.getContext('2d');
+displayCanvas = document.getElementById('displayCanvas');
+displayCtx = displayCanvas.getContext('2d');
+
+const file = fileInput.files[0];
+if (file) {
+const reader = new FileReader();
+reader.onload = function(e) {
+img.onload = function() {
+drawImage();
+};
+img.src = e.target.result;
+};
+reader.readAsDataURL(file);
+
+displayCanvas.addEventListener('mousedown', startDragging);
+displayCanvas.addEventListener('mousemove', dragImage);
+displayCanvas.addEventListener('mouseup', stopDragging);
+displayCanvas.addEventListener('mouseout', stopDragging);
+displayCanvas.addEventListener('wheel', resizeImage);
+
+displayCanvas.addEventListener('touchstart', startDragging);
+displayCanvas.addEventListener('touchmove', dragImage);
+displayCanvas.addEventListener('touchend', stopDragging);
+displayCanvas.addEventListener('touchmove', handlePinch);
+} else {
+output.innerHTML = "Silakan unggah file gambar!";
+}
+}
+
+function drawImage() {
+const scale = displayCanvas.width / canvas.width;
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+ctx.drawImage(img, imgX, imgY, img.width * imgScale, img.height * imgScale);
+ctx.drawImage(frameImg, 0, 0, canvas.width, canvas.height);
+displayCtx.clearRect(0, 0, displayCanvas.width, displayCanvas.height);
+displayCtx.drawImage(canvas, 0, 0, canvas.width * scale, canvas.height * scale);
+}
+
+function getOffset(event) {
+if (event.touches) {
+const touch = event.touches[0];
+return {
+x: touch.clientX - displayCanvas.getBoundingClientRect().left,
+y: touch.clientY - displayCanvas.getBoundingClientRect().top
+};
+}
+return {
+x: event.offsetX,
+y: event.offsetY
+};
+}
+
+function startDragging(event) {
+const scale = canvas.width / displayCanvas.width;
+const offset = getOffset(event);
+isDragging = true;
+startX = offset.x * scale - imgX;
+startY = offset.y * scale - imgY;
+if (event.touches && event.touches.length === 2) {
+initialDistance = getDistance(event.touches);
+}
+event.preventDefault();
+}
+
+function dragImage(event) {
+if (isDragging) {
+const scale = canvas.width / displayCanvas.width;
+const offset = getOffset(event);
+imgX = offset.x * scale - startX;
+imgY = offset.y * scale - startY;
+drawImage();
+event.preventDefault();
+}
+}
+
+function stopDragging() {
+isDragging = false;
+}
+
+function resizeImage(event) {
+imgScale *= event.deltaY < 0 ? 1.1 : 0.9;
+drawImage();
+event.preventDefault();
+}
+
+function handlePinch(event) {
+if (event.touches.length === 2) {
+const currentDistance = getDistance(event.touches);
+if (initialDistance > 0) {
+const scaleChange = currentDistance / initialDistance;
+imgScale *= scaleChange;
+initialDistance = currentDistance;
+drawImage();
+}
+event.preventDefault();
+}
+}
+
+function getDistance(touches) {
+const dx = touches[0].clientX - touches[1].clientX;
+const dy = touches[0].clientY - touches[1].clientY;
+return Math.sqrt(dx * dx + dy * dy);
+}
+
+function downloadImage() {
+const link = document.createElement('a');
+link.download = 'twibbon.png';
+link.href = canvas.toDataURL('image/png');
+link.click();
+}
+</script>
+</body>
+</html>
