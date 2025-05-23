@@ -47,7 +47,26 @@ border: 1px solid #ccc;
 touch-action: none;
 box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-input[type="file"] { margin: 20px 0; }
+#upload {
+display: none;
+}
+.file-label {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+padding: 10px 20px;
+font-size: 16px;
+border: none;
+border-radius: 8px;
+cursor: pointer;
+background: #28a745;
+color: #fff;
+transition: background 0.3s ease;
+margin: 10px;
+}
+.file-label:hover {
+background: #218838;
+}
 .btn {
 display: inline-flex;
 align-items: center;
@@ -80,7 +99,10 @@ width: auto;
 
 <div class="content">
 <h1>Editor Twibbon</h1>
-<p><input type="file" id="upload" accept="image/*" /></p>
+<p>
+<label for="upload" class="file-label"><i class="bi bi-image"></i> Pilih Gambar</label>
+<input type="file" id="upload" accept="image/*" />
+</p>
 <p><canvas id="canvas" width="500" height="500"></canvas></p>
 <p>
 <button class="btn" id="download"><i class="bi bi-download"></i> Unduh</button>
