@@ -151,6 +151,13 @@ alert("Perangkat Anda tidak mendukung fitur bagikan file.");
 }
 });
 });
+
+// PWA
+if ('serviceWorker' in navigator) {
+window.addEventListener('load', () => {
+navigator.serviceWorker.register('sw.js');
+});
+}
 </script>
 </body>
 </html>
