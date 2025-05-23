@@ -4,23 +4,59 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Editor Twibbon</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
-body { font-family: sans-serif; text-align: center; margin: 20px; }
-canvas { width: 100%; border: 1px solid #ccc; touch-action: none; }
-input[type="file"] { margin: 10px 0; }
+body {
+font-family: 'Segoe UI', sans-serif;
+background: #f9f9f9;
+color: #333;
+text-align: center;
+padding: 20px;
+}
+h1 {
+color: #4a90e2;
+}
+canvas {
+border: 2px dashed #4a90e2;
+border-radius: 8px;
+margin-top: 10px;
+touch-action: none;
+max-width: 100%;
+}
+input[type="file"] {
+margin: 10px 0;
+}
+button {
+background: #4a90e2;
+color: white;
+border: none;
+padding: 10px 20px;
+margin: 10px 5px;
+border-radius: 5px;
+cursor: pointer;
+font-size: 16px;
+}
+button i {
+margin-right: 5px;
+}
+button:hover {
+background: #357ab7;
+}
 </style>
 </head>
 <body>
 <h1>Editor Twibbon</h1>
 <input type="file" id="upload" accept="image/*"><br>
 <canvas id="canvas" width="500" height="500"></canvas><br>
-<button id="download">Unduh Gambar</button>
+<button id="download"><i class="fas fa-download"></i>Unduh Gambar</button>
+<button id="share"><i class="fas fa-share-alt"></i>Bagikan</button>
 
 <script>
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const upload = document.getElementById('upload');
 const download = document.getElementById('download');
+const share = document.getElementById('share');
 
 let userImg = new Image();
 let twibbonImg = new Image();
@@ -41,7 +77,6 @@ reader.readAsDataURL(file);
 
 userImg.onload = draw;
 twibbonImg.onload = draw;
-
 twibbonImg.src = 'frame.png'; // Ganti dengan path twibbon Anda
 
 function draw() {
@@ -88,6 +123,25 @@ const link = document.createElement('a');
 link.download = 'twibbon.png';
 link.href = canvas.toDataURL();
 link.click();
+});
+
+share.addEventListener('click', async () => {
+const blob = await (await fetch(canvas.toDataURL())).blob();
+const file = new File([blob], 'twibbon.png', { type: blob.type });
+
+if (navigator.canShare && navigator.canShare({ files: [file] })) {
+try {
+await navigator.share({
+title: 'Twibbon Saya',
+text: 'Lihat hasil editan twibbon saya!',
+files: [file]
+});
+} catch (err) {
+alert('Berbagi dibatalkan atau gagal.');
+}
+} else {
+alert('Fitur berbagi tidak didukung di perangkat ini.');
+}
 });
 </script>
 </body>
