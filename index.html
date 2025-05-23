@@ -81,7 +81,15 @@ background: #007bff;
 color: #fff;
 transition: background 0.3s ease;
 }
-.btn:hover { background: #0056b3; }
+.btn:hover { 
+background: #0056b3;
+}
+input#upload[type="file"] {
+display: none;
+}
+button[onclick*="()"] {
+cursor: pointer;
+}
 @media (max-width: 700px) {
 .content {
 margin: 0 auto;
@@ -105,6 +113,7 @@ width: auto;
 </p>
 <p><canvas id="canvas" width="500" height="500"></canvas></p>
 <p>
+<button onclick="selectUpload()"><i class="bi bi-image"></i> Pilih Foto</button>
 <button class="btn" id="download"><i class="bi bi-download"></i> Unduh</button>
 <button class="btn" id="share"><i class="bi bi-share"></i> Bagikan</button>
 </p>
@@ -240,5 +249,10 @@ $('.alert').slideUp(400);
 
 });
 </script>
+
+<script>
+function selectUpload() {
+document.getElementById("upload").click();
+}
 </body>
 </html>
