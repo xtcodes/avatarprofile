@@ -141,28 +141,27 @@ return Math.sqrt(dx * dx + dy * dy);
 }
 
 download.addEventListener("click", () => {
+if (!hasImage) return alert("Silakan unggah gambar terlebih dahulu.");
 const link = document.createElement("a");
 link.download = "twibbon.png";
-link.href = canvas.toDataURL("image/png");
+link.href = canvas.toDataURL();
 link.click();
 });
 
 share.addEventListener("click", async () => {
-try {
-const blob = await (await fetch(canvas.toDataURL("image/png"))).blob();
+if (!hasImage) return alert("Silakan unggah gambar terlebih dahulu.");
+canvas.toBlob(async (blob) => {
 const file = new File([blob], "twibbon.png", { type: "image/png" });
 if (navigator.canShare && navigator.canShare({ files: [file] })) {
-await navigator.share({
-files: [file],
-title: "Bagikan Twibbon",
-text: "Lihat Twibbon-ku!"
-});
+try {
+await navigator.share({ files: [file], title: "Twibbon Saya" });
+} catch (err) {
+alert("Gagal membagikan: " + err);
+}
 } else {
-alert("Perangkat tidak mendukung fitur berbagi file.");
+alert("Perangkat Anda tidak mendukung fitur bagikan file.");
 }
-} catch (e) {
-alert("Gagal membagikan gambar.");
-}
+});
 });
 </script>
 </body>
