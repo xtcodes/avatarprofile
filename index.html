@@ -101,14 +101,16 @@ width: auto;
 <div class="content">
 <h1>Editor Twibbon</h1>
   
-<p>
+<!--
 <label for="upload" class="file-label"><i class="bi bi-image"></i> Pilih Gambar</label>
 <input type="file" id="upload" accept="image/*" />
-</p>
+-->
   
 <p><canvas id="canvas" width="500" height="500"></canvas></p>
   
 <p>
+<input type="file" id="upload" style="display:none;" accept="image/*" />
+<button class="file-label"><i class="bi bi-image"></i> Pilih Foto</button>
 <button class="btn" id="download"><i class="bi bi-download"></i> Unduh</button>
 <button class="btn" id="share"><i class="bi bi-share"></i> Bagikan</button>
 </p>
@@ -246,5 +248,8 @@ $('.alert').slideUp(400);
 });
 </script>
 
+<script>
+document.querySelector('button').addEventListener('click', () => { document.querySelector('input[type="file"]').click(); });
+</script>
 </body>
 </html>
