@@ -84,12 +84,6 @@ transition: background 0.3s ease;
 .btn:hover { 
 background: #0056b3;
 }
-input#upload[type="file"] {
-display: none;
-}
-button[onclick*="()"] {
-cursor: pointer;
-}
 @media (max-width: 700px) {
 .content {
 margin: 0 auto;
@@ -107,16 +101,19 @@ width: auto;
 
 <div class="content">
 <h1>Editor Twibbon</h1>
-<!--
+  
+<p>
 <label for="upload" class="file-label"><i class="bi bi-image"></i> Pilih Gambar</label>
 <input type="file" id="upload" accept="image/*" />
--->
+</p>
+  
 <p><canvas id="canvas" width="500" height="500"></canvas></p>
+  
 <p>
-<button class="file-label" onclick="selectUpload()"><i class="bi bi-image"></i></button>
-<button class="btn" id="download"><i class="bi bi-download"></i></button>
+<button class="btn" id="download"><i class="bi bi-download"></i> Unduh</button>
 <button class="btn" id="share"><i class="bi bi-share"></i> Bagikan</button>
 </p>
+  
 </div>
   
 <script>
@@ -250,10 +247,5 @@ $('.alert').slideUp(400);
 });
 </script>
 
-<script>
-function selectUpload() {
-document.getElementById("upload").click();
-}
-</script>
 </body>
 </html>
