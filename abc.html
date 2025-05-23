@@ -12,13 +12,15 @@ canvas { display: block; }
 </head>
 <body>
 <h2>Editor Twibbon Interaktif</h2>
-<input type="file" id="fileInput" accept="image/*">
+<p><input type="file" id="fileInput" accept="image/*"></p>
 <div class="canvas-wrapper">
-<canvas id="displayCanvas" width="300" height="300"></canvas>
-<canvas id="canvas" width="300" height="300"></canvas>
-</div><br><br>
+<canvas id="displayCanvas" width="500" height="500"></canvas>
+<canvas id="canvas" width="500" height="500"></canvas>
+</div>
+<p>
 <button onclick="generateTwibbon()">Terapkan Twibbon</button>
 <button onclick="downloadImage()">Unduh Gambar</button>
+</p>
 <div id="output"></div>
 
 <script>
