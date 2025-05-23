@@ -3,7 +3,7 @@ self.addEventListener('install', e => {
     caches.open('twibbon-cache').then(cache =>
       cache.addAll([
         './',
-        './twibbon.html',
+        './index.html',
         './icon.png',
         './frame.png',
         './manifest.json'
