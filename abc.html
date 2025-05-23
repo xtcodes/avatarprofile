@@ -2,15 +2,74 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Editor Twibbon Interaktif</title>
 <style>
-body { width: 600px; font-family: sans-serif; margin: 5em auto; padding: 2em; }
-.canvas-wrapper { position: relative; border: 1px solid #ccc; }
-canvas { width: 100%; display: block; }
-#canvas { width: 100%; display: none; }
-.buttons { margin-top: 10px; }
-@media (max-width: 700px) { body { margin: 0 auto; width: auto; } }
+body {
+width: 600px; 
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background: linear-gradient(to right, #f0f2f5, #d9e2ec);
+margin: 5em auto;
+padding: 2em;
+text-align: center;
+color: #333;
+}
+
+h2 {
+margin-bottom: 20px;
+color: #2c3e50;
+}
+
+.canvas-wrapper {
+position: relative;
+display: inline-block;
+background: #fff;
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+overflow: hidden;
+border: 2px solid #d1d9e6;
+margin-top: 10px;
+}
+
+canvas {
+display: block;
+max-width: 100%;
+}
+
+#canvas {
+display: none;
+}
+
+.buttons {
+margin-top: 20px;
+}
+
+button {
+background-color: #3498db;
+color: white;
+padding: 10px 20px;
+margin: 5px;
+border: none;
+border-radius: 8px;
+font-size: 16px;
+cursor: pointer;
+box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+transition: background 0.3s ease;
+}
+
+button:hover {
+background-color: #2980b9;
+}
+
+input[type="file"] {
+margin-bottom: 10px;
+}
+
+@media (max-width: 700px) {
+body {
+margin: 0 auto;
+width: auto;
+}
+}
 </style>
 </head>
 <body>
