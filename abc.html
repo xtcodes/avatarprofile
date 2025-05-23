@@ -2,26 +2,27 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Editor Twibbon Interaktif</title>
 <style>
 body { font-family: sans-serif; text-align: center; margin: 20px; }
-.canvas-wrapper { position: relative; display: inline-block; border: 1px solid #ccc; }
+.canvas-wrapper { position: relative; border: 1px solid #ccc; }
 canvas { width: 100%; display: block; }
 #canvas { width: 100%; display: none; }
+.buttons { margin-top: 10px; }
 </style>
 </head>
 <body>
 <h2>Editor Twibbon Interaktif</h2>
-<p><input type="file" id="fileInput" accept="image/*"></p>
+<input type="file" id="fileInput" accept="image/*">
 <div class="canvas-wrapper">
-<canvas id="displayCanvas" width="500" height="500"></canvas>
-<canvas id="canvas" width="500" height="500"></canvas>
+<canvas id="displayCanvas" width="300" height="300"></canvas>
+<canvas id="canvas" width="300" height="300"></canvas>
 </div>
-<p>
+<div class="buttons">
 <button onclick="generateTwibbon()">Terapkan Twibbon</button>
 <button onclick="downloadImage()">Unduh Gambar</button>
-</p>
+<button onclick="shareImage()">Bagikan ke Sosial Media</button>
+</div>
 <div id="output"></div>
 
 <script>
@@ -153,6 +154,21 @@ const link = document.createElement('a');
 link.download = 'twibbon.png';
 link.href = canvas.toDataURL('image/png');
 link.click();
+}
+
+function shareImage() {
+canvas.toBlob(blob => {
+const file = new File([blob], 'twibbon.png', { type: 'image/png' });
+if (navigator.canShare && navigator.canShare({ files: [file] })) {
+navigator.share({
+title: 'Twibbon Saya',
+text: 'Lihat hasil twibbon saya!',
+files: [file]
+}).catch(err => alert('Gagal membagikan: ' + err));
+} else {
+alert('Perangkat tidak mendukung fitur berbagi file.');
+}
+}, 'image/png');
 }
 </script>
 </body>
