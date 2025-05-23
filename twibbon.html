@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editor Twibbon</title>
+<style>
+body { font-family: sans-serif; text-align: center; margin: 20px; }
+canvas { border: 1px solid #ccc; touch-action: none; }
+input[type="file"] { margin: 10px 0; }
+</style>
+</head>
+<body>
+<h1>Editor Twibbon</h1>
+<input type="file" id="upload" accept="image/*"><br>
+<canvas id="canvas" width="300" height="300"></canvas><br>
+<button id="download">Unduh Gambar</button>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const upload = document.getElementById('upload');
+const download = document.getElementById('download');
+
+let userImg = new Image();
+let twibbonImg = new Image();
+let scale = 1, lastDist = null;
+let position = { x: 150, y: 150 };
+let dragging = false;
+
+upload.addEventListener('change', (e) => {
+const file = e.target.files[0];
+if (file) {
+const reader = new FileReader();
+reader.onload = () => {
+userImg.src = reader.result;
+};
+reader.readAsDataURL(file);
+}
+});
+
+userImg.onload = draw;
+twibbonImg.onload = draw;
+
+twibbonImg.src = 'twibbon.png'; // Ganti dengan path twibbon Anda
+
+function draw() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+if (userImg.src) {
+const w = userImg.width * scale;
+const h = userImg.height * scale;
+ctx.drawImage(userImg, position.x - w/2, position.y - h/2, w, h);
+}
+if (twibbonImg.src) {
+ctx.drawImage(twibbonImg, 0, 0, 300, 300);
+}
+}
+
+canvas.addEventListener('touchstart', (e) => {
+if (e.touches.length === 1) dragging = true;
+});
+
+canvas.addEventListener('touchmove', (e) => {
+e.preventDefault();
+if (e.touches.length === 2) {
+const dx = e.touches[1].clientX - e.touches[0].clientX;
+const dy = e.touches[1].clientY - e.touches[0].clientY;
+const dist = Math.hypot(dx, dy);
+if (lastDist !== null) {
+scale *= dist / lastDist;
+scale = Math.min(5, Math.max(0.2, scale));
+}
+lastDist = dist;
+} else if (e.touches.length === 1 && dragging) {
+position.x = e.touches[0].clientX - canvas.getBoundingClientRect().left;
+position.y = e.touches[0].clientY - canvas.getBoundingClientRect().top;
+}
+draw();
+});
+
+canvas.addEventListener('touchend', () => {
+dragging = false;
+lastDist = null;
+});
+
+download.addEventListener('click', () => {
+const link = document.createElement('a');
+link.download = 'twibbon.png';
+link.href = canvas.toDataURL();
+link.click();
+});
+</script>
+</body>
+</html>
