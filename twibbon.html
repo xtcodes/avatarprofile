@@ -101,7 +101,16 @@ Unggah Twibbon
 <input type="file" id="twibbonInput" accept="image/*" />
 <i class="bi bi-camera"></i></label>
 </p>
+
+<p>
+<div id="warningBox">
+<strong>Peringatan:</strong>
+<p>Pastikan gambar sudah sesuai sebelum mengunduh atau membagikan.</p>
+<button class="btn btn-primary" id="proceedBtn">Lanjutkan</button>
+<button class="btn" onclick="hideWarning()">Batal</button>
+</div>
   
+</p>
 <p><div id="canvasContainer">
 <canvas id="twibbonCanvas" width="500" height="500"></canvas>
 </div></p>
@@ -110,13 +119,6 @@ Unggah Twibbon
 <button class="btn btn-primary" id="downloadBtn">Unduh</button>
 <button class="btn btn-primary" id="shareBtn">Bagikan</button>
 </div></p>
-  
-<div id="warningBox">
-<strong>Peringatan:</strong>
-<p>Pastikan gambar sudah sesuai sebelum mengunduh atau membagikan.</p>
-<button class="btn btn-primary" id="proceedBtn">Lanjutkan</button>
-<button class="btn" onclick="hideWarning()">Batal</button>
-</div>
   
 </div>
 <script>
