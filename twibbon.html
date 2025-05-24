@@ -29,7 +29,8 @@ canvas { width: 100%; height: 100%; }
 <div id="warningBox">
 <strong>Peringatan:</strong>
 <p>Pastikan gambar sudah sesuai sebelum mengunduh atau membagikan.</p>
-<button class="btn" onclick="hideWarning()">OK</button>
+<button class="btn" onclick="proceedAction()">Lanjutkan</button>
+<button class="btn" onclick="hideWarning()">Batal</button>
 </div>
 
 <script>
@@ -41,6 +42,7 @@ let scale = 1;
 let pos = { x: 0, y: 0 };
 let start = { x: 0, y: 0 };
 let isDragging = false;
+let pendingAction = null;
 
 document.getElementById("uploadInput").addEventListener("change", (e) => {
 const file = e.target.files[0];
@@ -133,11 +135,36 @@ ctx.drawImage(twibbon, 0, 0, canvas.width, canvas.height);
 }
 
 function showWarning(action) {
+pendingAction = action;
 document.getElementById("warningBox").style.display = "block";
 }
 
 function hideWarning() {
+pendingAction = null;
 document.getElementById("warningBox").style.display = "none";
+}
+
+function proceedAction() {
+hideWarning();
+if (pendingAction === 'download') {
+const link = document.createElement('a');
+link.download = 'twibboned.png';
+link.href = canvas.toDataURL('image/png');
+link.click();
+} else if (pendingAction === 'share') {
+canvas.toBlob(blob => {
+const file = new File([blob], "twibboned.png", { type: "image/png" });
+if (navigator.canShare && navigator.canShare({ files: [file] })) {
+navigator.share({
+files: [file],
+title: "Twibbon Saya",
+text: "Lihat hasil Twibbon saya!"
+});
+} else {
+alert("Fitur share tidak didukung di perangkat ini.");
+}
+});
+}
 }
 </script>
 </body>
